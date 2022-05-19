@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>15 lab</title>
+</head>
+
+<body>
+	<form id="form">
+		<div> <label id='mas'> Ваша рука: <br></label> </div>
+
+		<div> <button type="submit" id='but'>Задать новую руку</button> </div>
+
+		<div><label id="final">Самая сильная комбинация: </label></div>
+	</form>
+</body>
+<script>
+	"use strict"
+
+
+	let form = document.querySelector('#form');
+	let but = form.querySelector('#but');
+
+
+	but.addEventListener('click', function (event) {
+		event.preventDefault();
+		let final = form.querySelector('#final')
+		let mas = form.querySelector('#mas')
+		let litso = ['2т', '2ч', '2п', '2б', '3т', '3ч', '3п', '3б', '4т', '4ч', '4п', '4б',
+			'5т', '5ч', '5п', '5б', '6т', '6ч', '6п', '6б', '7т', '7ч', '7п', '7б', '8т', '8ч', '8п', '8б',
+			'9т', '9ч', '9п', '9б', '10т', '10ч', '10п', '10б', 'Вт', 'Вч', 'Вп', 'Вб', 'Дт', 'Дч', 'Дп', 'Дб',
+			'Кт', 'Кч', 'Кп', 'Кб', 'Тт', 'Тч', 'Тп', 'Тб']
+		let ruka = [5]
+		let x
+		mas.innerHTML = 'Ваша рука: '
+		for (let i = 0; i < 5; i++) {
+			x = Math.floor(Math.random() * litso.length)
+			ruka[i] = litso[x]
+			mas.innerHTML = mas.innerHTML + ruka[i] + ' '
+			litso.splice(x, 1)
+		}
+		final.innerHTML = comb(ruka)
+		function comb(ruka) {
+			litso = ['2т', '2ч', '2п', '2б', '3т', '3ч', '3п', '3б', '4т', '4ч', '4п', '4б',
+				'5т', '5ч', '5п', '5б', '6т', '6ч', '6п', '6б', '7т', '7ч', '7п', '7б', '8т', '8ч', '8п', '8б',
+				'9т', '9ч', '9п', '9б', '10т', '10ч', '10п', '10б', 'Вт', 'Вч', 'Вп', 'Вб', 'Дт', 'Дч', 'Дп', 'Дб',
+				'Кт', 'Кч', 'Кп', 'Кб', 'Тт', 'Тч', 'Тп', 'Тб']
+			for (let i = 0; i < ruka.length; i++) {
+				if (typeof ruka[i] != 'string' || (!litso.includes(ruka[i]))) { return 'Введено неверное значение' }
+			}
+			let masti1 = [5]
+			let litso1 = [5]
+			for (let i = 0; i < 5; i++) {
+				if (ruka[i][1] == '0') {
+					litso1[i] = 10
+					masti1[i] = ruka[i][2]
+				}
+				else if (ruka[i][0] == 'В') {
+					litso1[i] = 11
+					masti1[i] = ruka[i][1]
+				}
+				else if (ruka[i][0] == 'Д') {
+					litso1[i] = 12
+					masti1[i] = ruka[i][1]
+				}
+				else if (ruka[i][0] == 'К') {
+					litso1[i] = 13
+					masti1[i] = ruka[i][1]
+				}
+				else if (ruka[i][0] == 'Т') {
+					litso1[i] = 14
+					masti1[i] = ruka[i][1]
+				}
+				else {
+					litso1[i] = parseInt(ruka[i][0], 10)
+					masti1[i] = ruka[i][1]
+				}
+			}
+
+			let karti = []
+			for (let i = 0; i < 5; i++) {
+				karti[i] = {
+					name: ruka[i],
+					znach: litso1[i],
+					mast: masti1[i]
+				}
+			}
+			karti.sort((prev, next) => prev.znach - next.znach)
+
+			if (((karti[0].znach + 4) == (karti[1].znach + 3) && ((karti[0].znach + 4) == karti[2].znach + 2) && ((karti[0].znach + 4) == karti[3].znach + 1) && ((karti[0].znach + 4) == karti[4].znach) && ((karti[0].znach + 4) == 14)) && ((karti[0].mast) == (karti[1].mast) && ((karti[0].mast) == karti[2].mast) && ((karti[0].mast) == karti[3].mast) && ((karti[0].mast) == karti[4].mast))) { return 'Сильнейшая комбинация в руке - Флеш Рояль (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if (((karti[0].znach + 4) == (karti[1].znach + 3) && ((karti[0].znach + 4) == karti[2].znach + 2) && ((karti[0].znach + 4) == karti[3].znach + 1) && ((karti[0].znach + 4) == karti[4].znach)) && ((karti[0].mast) == (karti[1].mast) && ((karti[0].mast) == karti[2].mast) && ((karti[0].mast) == karti[3].mast) && ((karti[0].mast) == karti[4].mast))) { return 'Сильнейшая комибнация в руке - Стрит Флеш (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if (karti[0].znach == karti[3].znach) { return 'Сильнейшая комбинация в руке - Каре (' + karti[0].name + ',' + karti[1].name + karti[2].name + ',' + karti[3].name + ')' }
+			else if (karti[1].znach == karti[4].znach) { return 'Сильнейшая комбинация в руке - Каре (' + karti[1].name + ',' + karti[2].name + karti[3].name + ',' + karti[4].name + ')' }
+			else if ((karti[0].znach == karti[1].znach && karti[2].znach == karti[4].znach)) { return 'Сильнейшая комбинация в руке - Фулл-Хаус (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if ((karti[0].znach == karti[2].znach && karti[3].znach == karti[4].znach)) { return 'Сильнейшая комбинация в руке - Фулл-Хаус (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if (((karti[0].mast) == (karti[1].mast) && ((karti[0].mast) == karti[2].mast) && ((karti[0].mast) == karti[3].mast) && ((karti[0].mast) == karti[4].mast))) { return 'Сильнейшая комбинация в руке - Флеш (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if (((karti[0].znach + 4) == (karti[1].znach + 3) && ((karti[0].znach + 4) == karti[2].znach + 2) && ((karti[0].znach + 4) == karti[3].znach + 1) && ((karti[0].znach + 4) == karti[4].znach))) { return 'Сильнейшая комибнация в руке - Стрит (' + karti[0].name + ',' + karti[1].name + ',' + karti[2].name + ',' + karti[3].name + ',' + karti[4].name + ',' + ')' }
+			else if ((karti[0].znach == karti[2].znach)) { return 'Сильнейшая комбинация в руке - Сет (' + karti[0].name + ',' + karti[1].name + karti[2].name + ')' }
+			else if (karti[1].znach == karti[3].znach) { return 'Сильнейшая комбинация в руке - Сет (' + karti[1].name + karti[2].name + ',' + karti[3].name + ')' }
+			else if (karti[2].znach == karti[4].znach) { return 'Сильнейшая комбинация в руке - Сет (' + karti[2].name + karti[3].name + ',' + karti[4].name + ')' }
+			else if ((karti[0].znach == karti[1].znach) && (karti[2].znach == karti[3].znach)) { return 'Сильнейшая комбинация в руке - Две Пары (' + karti[0].name + ',' + karti[1].name + karti[2].name + ',' + karti[3].name + ')' }
+			else if ((karti[0].znach == karti[1].znach) && (karti[3].znach == karti[4].znach)) { return 'Сильнейшая комбинация в руке - Две Пары (' + karti[0].name + ',' + karti[1].name + karti[3].name + ',' + karti[4].name + ')' }
+			else if ((karti[1].znach == karti[2].znach) && (karti[3].znach == karti[4].znach)) { return 'Сильнейшая комбинация в руке - Две Пары (' + karti[1].name + ',' + karti[2].name + karti[3].name + ',' + karti[4].name + ')' }
+			else if (karti[0].znach == karti[1].znach) { return 'Сильнейшая комибинация в руке - Пара (' + karti[0].name + ',' + karti[1].name + ')' }
+			else if (karti[1].znach == karti[2].znach) { return 'Сильнейшая комибинация в руке - Пара (' + karti[1].name + ',' + karti[2].name + ')' }
+			else if (karti[2].znach == karti[3].znach) { return 'Сильнейшая комибинация в руке - Пара (' + karti[2].name + ',' + karti[3].name + ')' }
+			else if (karti[3].znach == karti[4].znach) { return 'Сильнейшая комибинация в руке - Пара (' + karti[3].name + ',' + karti[4].name + ')' }
+			else return ('Сильнейшая комбинация в руке - Старшая Карта (' + karti[4].name + ')')
+
+
+
+		}
+	}
+
+
+
+
+
+
+
+	)
+</script>
+
+</html>
